@@ -1,9 +1,9 @@
 import { defineConfig } from 'astro/config'
 import { fileURLToPath } from 'node:url'
 
-import tailwindcss from '@tailwindcss/vite'
 import react from '@astrojs/react'
 import vue from '@astrojs/vue'
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   integrations: [react(), vue()],
