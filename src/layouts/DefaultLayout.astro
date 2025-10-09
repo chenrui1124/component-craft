@@ -1,12 +1,24 @@
 ---
 import '@/styles/global.css'
 
+import type { AstroInstance } from 'astro'
+import type { Meta } from '@/types'
+
+import { ClientRouter } from 'astro:transitions'
+import MainMenu from '@/components/ui/MainMenu.vue'
+
 interface Props {
   title: string
   description?: string
 }
 
 const { title, description } = Astro.props
+
+const stories = Object.entries<AstroInstance & { meta: Meta }>(
+  import.meta.glob('../pages/*.astro', { eager: true })
+)
+  .filter(([_, instance]) => Object.hasOwn(instance, 'meta'))
+  .map(([_, { url, meta }]) => ({ url: url!, meta }))
 ---
 
 <html lang=''>
@@ -14,10 +26,19 @@ const { title, description } = Astro.props
     <meta charset='utf-8' />
     <meta name='viewport' content='width=device-width' />
     <!-- <link rel='icon' type='image/svg+xml' href='/favicon.svg' /> -->
+    <link rel='preconnect' href='https://fonts.googleapis.com' />
+    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Geist&display=swap' />
     <title>{title}</title>
     {description && <meta name='description' content={description} />}
+    <ClientRouter />
   </head>
-  <body>
-    <!--  -->
+  <body class='bg-sur text-sm/normal text-on-sur'>
+    <div class='relative isolate h-screen w-screen overflow-x-hidden overflow-y-auto'>
+      <MainMenu client:only='vue' currentUrl={Astro.url.pathname} stories={stories} />
+      <main class='flex size-full flex-col items-center justify-center-safe p-3 md:p-6'>
+        <slot />
+      </main>
+    </div>
   </body>
 </html>
