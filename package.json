@@ -23,6 +23,7 @@
   "devDependencies": {
     "@iconify-json/fluent": "^1.2.32",
     "@iconify-json/logos": "^1.2.9",
+    "@iconify-json/material-symbols": "^1.2.40",
     "@iconify/tailwind4": "^1.0.6",
     "@tailwindcss/vite": "^4.1.14",
     "@types/node": "^24.6.2",
