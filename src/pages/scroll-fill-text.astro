@@ -1,0 +1,16 @@
+---
+import type { Meta } from '@/types'
+
+import ScrollFillTextStory from '@/components/react/ScrollFillTextStory'
+import DefaultLayout from '@/layouts/DefaultLayout.astro'
+import { Framework } from '@/types'
+
+export const meta: Meta = {
+  name: 'Scroll Fill Text',
+  framework: Framework.React,
+}
+---
+
+<DefaultLayout title={meta.name}>
+  <ScrollFillTextStory client:only='react' />
+</DefaultLayout>
