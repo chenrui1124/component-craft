@@ -1,0 +1,16 @@
+---
+import type { Meta } from '@/types'
+
+import CollapsibleSidebarLayoutStory from '@/components/vue/CollapsibleSidebarLayoutStory.vue'
+import DefaultLayout from '@/layouts/DefaultLayout.astro'
+import { Framework } from '@/types'
+
+export const meta: Meta = {
+  name: 'Collapsible Sidebar Layout',
+  framework: Framework.Vue,
+}
+---
+
+<DefaultLayout title={meta.name}>
+  <CollapsibleSidebarLayoutStory client:only='vue' />
+</DefaultLayout>
