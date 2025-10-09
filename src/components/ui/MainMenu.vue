@@ -39,7 +39,7 @@ const [state, toggle] = useToggle()
     leave-active-class="transition duration-300 ease-out-quart"
     leave-to-class="opacity-0"
   >
-    <div v-if="state" class="absolute inset-0 z-20 bg-sur/25 backdrop-blur-md"></div>
+    <div v-if="state" class="absolute inset-0 z-20 bg-sur/25 backdrop-blur-sm"></div>
   </Transition>
   <Transition
     enter-from-class="translate-x-full"

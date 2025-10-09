@@ -36,7 +36,7 @@ const stories = Object.entries<AstroInstance & { meta: Meta }>(
   <body class='bg-sur text-sm/normal text-on-sur'>
     <div class='relative isolate h-screen w-screen overflow-x-hidden overflow-y-auto'>
       <MainMenu client:only='vue' currentUrl={Astro.url.pathname} stories={stories} />
-      <main class='flex size-full flex-col items-center justify-center-safe p-3 md:p-6'>
+      <main class='flex size-full flex-col items-center justify-center-safe'>
         <slot />
       </main>
     </div>
