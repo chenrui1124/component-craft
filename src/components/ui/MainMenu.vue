@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import type { Meta } from '@/types'
 
-import { useToggle } from '@vueuse/core'
+import { useColorMode, useCycleList, useToggle } from '@vueuse/core'
+import { onMounted } from 'vue'
 import IconButton from './IconButton.vue'
 
 const { stories } = defineProps<{
@@ -9,12 +10,56 @@ const { stories } = defineProps<{
   stories: { url: string; meta: Meta }[]
 }>()
 
-const [state, toggle] = useToggle()
+const [isAsideOpen, toggle] = useToggle()
+
+const colorMode = useColorMode({
+  attribute: 'data-color-mode',
+  modes: {
+    system: 'system',
+    light: 'light',
+    dark: 'dark',
+  },
+})
+
+const colorModeList = [
+  {
+    colorMode: 'system' as const,
+    icon: 'i-[fluent--dark-theme-24-filled]',
+  },
+  {
+    colorMode: 'light' as const,
+    icon: 'i-[fluent--weather-sunny-24-filled]',
+  },
+  {
+    colorMode: 'dark' as const,
+    icon: 'i-[fluent--weather-moon-24-filled]',
+  },
+]
+
+const { state, next, go } = useCycleList(colorModeList)
+
+onMounted(() => {
+  const currentIndex = colorModeList.findIndex(item => item.colorMode === colorMode.value)
+  if (currentIndex) go(currentIndex)
+})
+
+const nextColorMode = () => {
+  colorMode.value = next().colorMode
+  console.log(colorMode.value)
+}
+
+const onClickNextColorMode = () => {
+  if ('startViewTransition' in document) {
+    document.startViewTransition(() => nextColorMode())
+  } else {
+    nextColorMode()
+  }
+}
 </script>
 
 <template>
   <IconButton
-    :icon="state ? 'i-[fluent--circle-24-filled]' : 'i-[fluent--circle-shadow-24-regular]'"
+    :icon="isAsideOpen ? 'i-[fluent--circle-24-filled]' : 'i-[fluent--circle-shadow-24-regular]'"
     class="absolute top-3 right-3 z-30"
     @click="toggle()"
   />
@@ -24,7 +69,7 @@ const [state, toggle] = useToggle()
     leave-active-class="transition duration-300 ease-out-quart"
     leave-to-class="opacity-0"
   >
-    <div v-if="state" class="absolute inset-0 z-20 bg-sur/25 backdrop-blur-md"></div>
+    <div v-if="isAsideOpen" class="absolute inset-0 z-20 bg-sur/25 backdrop-blur-md"></div>
   </Transition>
   <Transition
     enter-from-class="translate-x-full"
@@ -33,17 +78,18 @@ const [state, toggle] = useToggle()
     leave-to-class="translate-x-full"
   >
     <aside
-      v-if="state"
-      class="absolute top-15 right-0 bottom-0 z-20 flex flex-col justify-start overflow-y-auto p-3 text-on-sur md:p-6"
+      v-if="isAsideOpen"
+      class="absolute top-3 right-0 bottom-0 z-20 flex flex-col items-end justify-start gap-3 overflow-y-auto p-3 pt-0 text-on-sur"
     >
-      <ul>
+      <IconButton :icon="state.icon" class="mr-12" @click="onClickNextColorMode" />
+      <ul class="p-3 pt-1.5">
         <li class="contents">
           <a
             v-for="({ url, meta }, index) of stories"
             :key="index"
             :href="url"
             :class="[
-              'flex h-7 cursor-pointer items-center justify-end text-right leading-7 transition duration-300 select-none after:ml-3 after:inline-block after:h-px after:w-4 after:transition-all after:duration-300',
+              'flex h-7 cursor-pointer items-center justify-end leading-7 transition duration-300 select-none after:ml-3 after:inline-block after:h-px after:w-4 after:transition-all after:duration-300',
               url === currentUrl
                 ? 'pointer-events-none text-klein after:w-8 after:bg-klein'
                 : 'after:bg-neu hover:text-klein hover:after:w-8 hover:after:bg-klein',

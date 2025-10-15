@@ -22,15 +22,15 @@
 }
 
 :root {
-  [data-color-mode='system'] {
+  &[data-color-mode='system'] {
     color-scheme: light dark;
   }
 
-  [data-color-mode='light'] {
+  &[data-color-mode='light'] {
     color-scheme: only light;
   }
 
-  [data-color-mode='dark'] {
+  &[data-color-mode='dark'] {
     color-scheme: only dark;
   }
 }
