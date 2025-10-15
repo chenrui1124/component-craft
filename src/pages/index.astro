@@ -1,7 +1,18 @@
 ---
 import DefaultLayout from '@/layouts/DefaultLayout.astro'
+import { useStories } from '@/utils/useStories'
+
+const stories = useStories()
 ---
 
-<DefaultLayout title=''>
-  <!--  -->
+<DefaultLayout title='Component Craft'>
+  <div class='flex size-full flex-col flex-wrap gap-3 p-6 text-lg'>
+    {
+      stories.map(({ meta: { name }, url }) => (
+        <a href={url} class='size-fit hover:underline'>
+          {name}
+        </a>
+      ))
+    }
+  </div>
 </DefaultLayout>
