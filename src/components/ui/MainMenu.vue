@@ -10,10 +10,16 @@ const { stories } = defineProps<{
   stories: { url: string; meta: Meta }[]
 }>()
 
+/*
+ * Control sidebar visible
+ */
 const [isAsideOpen, toggle] = useToggle()
 
 onKeyDown('Escape', () => toggle(false))
 
+/*
+ * Switch color mode
+ */
 const colorMode = useColorMode({
   attribute: 'data-color-mode',
   modes: {
@@ -60,11 +66,20 @@ const onClickNextColorMode = () => {
 </script>
 
 <template>
-  <IconButton
-    :icon="isAsideOpen ? 'i-[fluent--circle-24-filled]' : 'i-[fluent--circle-shadow-24-regular]'"
-    class="absolute top-3 right-3 z-30"
-    @click="toggle()"
-  />
+  <div class="absolute top-3 right-3 z-30 flex gap-3">
+    <Transition
+      enter-from-class="opacity-0"
+      enter-active-class="transition duration-300 ease-out-quart"
+      leave-active-class="transition duration-300 ease-out-quart"
+      leave-to-class="opacity-0"
+    >
+      <IconButton v-if="isAsideOpen" :icon="state.icon" @click="onClickNextColorMode" />
+    </Transition>
+    <IconButton
+      :icon="isAsideOpen ? 'i-[fluent--circle-24-filled]' : 'i-[fluent--circle-shadow-24-regular]'"
+      @click="toggle()"
+    />
+  </div>
   <Transition
     enter-from-class="opacity-0"
     enter-active-class="transition duration-300 ease-out-quart"
@@ -73,10 +88,9 @@ const onClickNextColorMode = () => {
   >
     <div v-if="isAsideOpen" class="absolute inset-0 z-20 bg-sur/25 backdrop-blur-md">
       <aside
-        class="absolute top-3 right-0 bottom-0 z-20 flex flex-col items-end justify-start gap-3 overflow-y-auto p-3 pt-0 text-on-sur"
+        class="absolute top-0 right-0 bottom-0 z-20 flex flex-col items-end justify-start gap-3 overflow-y-auto px-8 pt-15 text-on-sur"
       >
-        <IconButton :icon="state.icon" class="mr-12" @click="onClickNextColorMode" />
-        <ul class="p-3 pt-1.5">
+        <ul>
           <li class="contents">
             <a
               v-for="({ url, meta }, index) of stories"

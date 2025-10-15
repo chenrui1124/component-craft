@@ -38,14 +38,14 @@ const toggleIcon = computed(() =>
   >
     <header
       style="grid-area: header"
-      class="flex h-14 items-center gap-3 border-b border-b-otl bg-sur px-3"
+      class="flex h-15 items-center gap-3 border-b border-b-otl bg-sur px-3"
     >
       <button
         :aria-controls="sidebarId"
         :aria-expanded="isSidebarOpen"
         :aria-label="isSidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'"
         @click="toggleSidebarOpen()"
-        class="hover:bg-pri/5 inline-flex size-8 cursor-pointer items-center justify-center rounded-md transition-colors"
+        class="inline-flex size-9 cursor-pointer items-center justify-center rounded-md transition-colors hover:bg-neu/5"
       >
         <span aria-hidden="true" :class="['pointer-events-none size-4.5', toggleIcon]"></span>
       </button>
